@@ -18,14 +18,14 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
 
 setwd("~/BVG-7003/Devoir_1_BVG-7003/data/")
-df = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/2_Data_RNASeq_Cannabis_Sex.csv")
-REM16 = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/REM16.csv")
-FT1 = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/FT1.csv")
+df = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/2_Data_RNASeq_Cannabis_Sex.csv", header = T)
+REM16 = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/REM16.csv", header = T)
+FT1 = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/FT1.csv", header = T)
 
 ```
 ```
-cat 2_Data_RNASeq_Cannabis_Sex.csv | grep 'LOC115699937' > REM16
-cat 2_Data_RNASeq_Cannabis_Sex.csv | grep 'LOC115696989' > FT1
+cat 2_Data_RNASeq_Cannabis_Sex.csv | grep 'LOC115699937' > REM16.csv
+cat 2_Data_RNASeq_Cannabis_Sex.csv | grep 'LOC115696989' > FT1.csv
 
 ```
 
