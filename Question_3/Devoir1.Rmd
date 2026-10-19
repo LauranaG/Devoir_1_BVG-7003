@@ -18,26 +18,61 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
 
 setwd("~/BVG-7003/Devoir_1_BVG-7003/data/")
-df = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/2_Data_RNASeq_Cannabis_Sex.csv", header = T)
-REM16 = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/REM16.csv", header = T)
-FT1 = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/FT1.csv", header = T)
+df = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/2_Data_RNASeq_Cannabis_Sex.csv")
+
+library(dplyr)
+
+REM16 <- dplyr::filter(df, grepl("LOC115699937", X))
+FT1   <- dplyr::filter(df, grepl("LOC115696989", X))
+
+female_cols <- grep("_XX", names(df), value = TRUE)
+male_cols   <- grep("_XY", names(df), value = TRUE)
+
+df_females_REM16 <- REM16[, c("X", female_cols)]
+df_males_REM16   <- REM16[, c("X", male_cols)]
+
+df_females_FT1   <- FT1[, c("X", female_cols)]
+df_males_FT1     <- FT1[, c("X", male_cols)]
+
+all_females_wide <- bind_rows(df_females_REM16, df_females_FT1)
+all_males_wide   <- bind_rows(df_males_REM16, df_males_FT1)
+
+females_long <- pivot_longer(all_females_wide, cols = -X, names_to = "Sample", values_to = "Expression")
+females_long$Sex <- "Female (XX)"
+
+males_long <- pivot_longer(all_males_wide, cols = -X, names_to = "Sample", values_to = "Expression")
+males_long$Sex <- "Male (XY)"
+
+df_final <- bind_rows(females_long, males_long)
 
 ```
-```
-cat 2_Data_RNASeq_Cannabis_Sex.csv | grep 'LOC115699937' > REM16.csv
-cat 2_Data_RNASeq_Cannabis_Sex.csv | grep 'LOC115696989' > FT1.csv
-
-```
-
-
 ## Including Plots
 
 You can also embed plots, for example:
 
 ```{r}
 
-library(ggplot2)
+boxplot(Expression ~ Sex, 
+        data = subset(df_final, X == "Cannabis_LOC115699937"),
+        names = c("Femelle (XX)", "Mâle (XY)"),
+        main = "Expression de REM16 selon le sexe",
+        xlab = "Sexe", ylab = "Expression",
+        col = c("pink", "lightblue"))
 
+boxplot(Expression ~ Sex, 
+        data = subset(df_final, X == "LOC115696989"),
+        names = c("Femelle (XX)", "Mâle (XY)"),
+        main = "Expression de FT1 selon le sexe",
+        xlab = "Sexe", ylab = "Expression",
+        col = c("pink", "lightblue"))
+
+boxplot(Expression ~ Sex + X, 
+        data = df_final,
+        names = c("REM16\nFemelle (XX)", "REM16\nMâle (XY)", 
+                  "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
+        main = "Expression de REM16 et FT1 selon le sexe",
+        xlab = "Gène et Sexe", ylab = "Expression",
+        col = c("pink", "lightblue"))
 
 ```
 

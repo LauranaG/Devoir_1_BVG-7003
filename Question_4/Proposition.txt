@@ -1,0 +1,15 @@
+Méthode à haut débit pour le sexage transcriptomique du cannabis :
+
+L'analyse des données transcriptomiques révèle que REM16 s'exprime chez les deux sexes, mais est significativement surexprimé chez les femelles (XX). FT1 présente une expression constante et plus faible peu importe le sexe, ce qui en fait le gène de référence endogène idéal pour la normalisation.
+
+1. Collecte et traitement des échantillons
+
+Après une courte induction florale, un micro-prélèvement de l'apex est effectué dès l'activation transcriptionnelle. Les échantillons sont traités en plaques de 384 puits. L'extraction d'ARN s'effectue par lyse automatisée et purification sur billes magnétiques (technologie SPRI), éliminant les étapes limitantes de centrifugation.
+
+2. Détermination du sexe (RT-qPCR)
+
+L'analyse s'effectue par RT-qPCR multiplexe. Puisque REM16 n'est pas un marqueur de type présence/absence, la détermination du sexe repose sur la quantification relative. Le signal d'amplification de REM16 est normalisé par celui de FT1 pour obtenir un ratio d'expression (calcul du $\Delta Ct$). Un niveau d'expression relatif élevé identifie formellement les plants femelles, tandis qu'un niveau d'expression plus bas identifie les plants mâles.
+
+3. Adaptation au haut débit
+
+L'utilisation d'automates de pipetage en plaque permet de distribuer les réactifs rapidement et de manière reproductible, rendant possible la miniaturisation des volumes réactionnels. La traçabilité est assurée par un système de codes-barres couplé à un script d'analyse (ex. R ou Python) qui calcule automatiquement les $\Delta Ct$ et attribue le sexe selon un seuil quantitatif prédéfini, sans intervention manuelle.
