@@ -21,21 +21,22 @@ setwd("~/BVG-7003/Devoir_1_BVG-7003/data/")
 df = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/2_Data_RNASeq_Cannabis_Sex.csv")
 
 library(dplyr)
+library(tidyr)
 
 REM16 <- dplyr::filter(df, grepl("LOC115699937", X))
-FT1   <- dplyr::filter(df, grepl("LOC115696989", X))
+FT1 <- dplyr::filter(df, grepl("LOC115696989", X))
 
 female_cols <- grep("_XX", names(df), value = TRUE)
-male_cols   <- grep("_XY", names(df), value = TRUE)
+male_cols <- grep("_XY", names(df), value = TRUE)
 
 df_females_REM16 <- REM16[, c("X", female_cols)]
-df_males_REM16   <- REM16[, c("X", male_cols)]
+df_males_REM16 <- REM16[, c("X", male_cols)]
 
-df_females_FT1   <- FT1[, c("X", female_cols)]
-df_males_FT1     <- FT1[, c("X", male_cols)]
+df_females_FT1 <- FT1[, c("X", female_cols)]
+df_males_FT1 <- FT1[, c("X", male_cols)]
 
 all_females_wide <- bind_rows(df_females_REM16, df_females_FT1)
-all_males_wide   <- bind_rows(df_males_REM16, df_males_FT1)
+all_males_wide <- bind_rows(df_males_REM16, df_males_FT1)
 
 females_long <- pivot_longer(all_females_wide, cols = -X, names_to = "Sample", values_to = "Expression")
 females_long$Sex <- "Female (XX)"
