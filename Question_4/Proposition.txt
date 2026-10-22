@@ -1,15 +1,12 @@
 Méthode à haut débit pour le sexage transcriptomique du cannabis :
 
-L'analyse des données transcriptomiques révèle que REM16 s'exprime chez les deux sexes, mais est significativement surexprimé chez les femelles (XX). FT1 présente une expression constante et plus faible peu importe le sexe, ce qui en fait le gène de référence endogène idéal pour la normalisation.
+L'analyse transcriptomique démontre que REM16 est fortement surexprimé chez les femelles, tandis que FT1 présente une expression stable entre les sexes, agissant comme gène de référence (contrôle) idéal. Pour un dépistage à grande échelle et à faible coût, cette stratégie mise sur la simplification de l'extraction et la miniaturisation.
 
-1. Collecte et traitement des échantillons
+1. Échantillonnage et lyse directe (sans purification)
+Un micro-prélèvement foliaire est effectué au stade végétatif pour une identification précoce. Pour réduire drastiquement les coûts, l'extraction d'ARN classique est remplacée par une lyse directe : les tissus sont placés en plaques de 384 puits dans un tampon de lyse optimisé et chauffés. Ce lysat brut est utilisé directement, éliminant le besoin de kits de purification plus coûteux (comme les billes magnétiques).
 
-Après une courte induction florale, un micro-prélèvement de l'apex est effectué dès l'activation transcriptionnelle. Les échantillons sont traités en plaques de 384 puits. L'extraction d'ARN s'effectue par lyse automatisée et purification sur billes magnétiques (technologie SPRI), éliminant les étapes limitantes de centrifugation.
+2. RT-qPCR multiplexe en une étape
+L'extrait subit une RT-qPCR One-Step (transcription inverse et amplification dans le même tube). Pour diviser les coûts de réactifs par deux, la réaction est multiplexée : REM16 et FT1 sont co-amplifiés simultanément dans le même puits à l'aide de sondes fluorescentes distinctes. Le ratio d'expression est évalué par le calcul du dCt (différence de cycle de détection entre REM16 et FT1). Un dCt plus faible indique normalement une femelle.
 
-2. Détermination du sexe (RT-qPCR)
-
-L'analyse s'effectue par RT-qPCR multiplexe. Puisque REM16 n'est pas un marqueur de type présence/absence, la détermination du sexe repose sur la quantification relative. Le signal d'amplification de REM16 est normalisé par celui de FT1 pour obtenir un ratio d'expression (calcul du $\Delta Ct$). Un niveau d'expression relatif élevé identifie formellement les plants femelles, tandis qu'un niveau d'expression plus bas identifie les plants mâles.
-
-3. Adaptation au haut débit
-
-L'utilisation d'automates de pipetage en plaque permet de distribuer les réactifs rapidement et de manière reproductible, rendant possible la miniaturisation des volumes réactionnels. La traçabilité est assurée par un système de codes-barres couplé à un script d'analyse (ex. R ou Python) qui calcule automatiquement les $\Delta Ct$ et attribue le sexe selon un seuil quantitatif prédéfini, sans intervention manuelle.
+3. Analyse automatisée
+Des automates de pipetage garantissent la reproductibilité des micro-volumes, réduisant encore le coût par échantillon. Un script R ou Python automatise la lecture des dCt et assigne le sexe de chaque individu selon le seuil validé à la Tâche 3, assurant un traitement rapide et standardisé des données.
