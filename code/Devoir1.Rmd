@@ -13,11 +13,11 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(dplyr)
 library(tidyr)
 
-# Le script et le fichier CSV se trouvent dans data/.
-fichier_donnees <- "2_Data_RNASeq_Cannabis_Sex.csv"
+# Le script est dans code/ et le fichier CSV dans data/.
+fichier_donnees <- "../data/2_Data_RNASeq_Cannabis_Sex.csv"
 
 if (!file.exists(fichier_donnees)) {
-  stop("Erreur : Le fichier de données est introuvable dans data/. Assurez-vous d'exécuter le script depuis la structure originale du dépôt.")
+  stop("Erreur : Le fichier de données est introuvable dans ../data/. Assurez-vous d'exécuter le script depuis la structure originale du dépôt.")
 }
 
 df <- read.csv(fichier_donnees, stringsAsFactors = FALSE)

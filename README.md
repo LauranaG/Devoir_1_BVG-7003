@@ -17,7 +17,7 @@ Ce dépôt rassemble les livrables, les données et le pipeline d'analyse bioinf
 | :---: | :--- | :--- |
 | **Tâche 1** | Initialisation et configuration du dépôt Git/GitHub | [`Question_1/README.md`](Question_1/README.md) |
 | **Tâche 2** | Résumé condensé (exactement 250 mots) de Steen *et al.* (2013) | [`Question_2/Abstract.txt`](Question_2/Abstract.txt) |
-| **Tâche 3** | Script R Markdown d'analyse de l'expression de *REM16* et *FT1* | [`data/Devoir1.Rmd`](data/Devoir1.Rmd) |
+| **Tâche 3** | Script R Markdown d'analyse de l'expression de *REM16* et *FT1* | [`code/Devoir1.Rmd`](code/Devoir1.Rmd) |
 | **Tâche 4** | Proposition d'une méthode à haut débit pour le sexage du cannabis | [`Question_4/Proposition.txt`](Question_4/Proposition.txt) |
 | **Données** | Matrice d'expression RNA-Seq normalisée (138 plantes, > 34 000 gènes) | [`data/2_Data_RNASeq_Cannabis_Sex.csv`](data/2_Data_RNASeq_Cannabis_Sex.csv) |
 | **Figures** | Graphiques générés automatiquement par le script de la Tâche 3 | [`figures/`](figures/) |
@@ -27,7 +27,8 @@ Ce dépôt rassemble les livrables, les données et le pipeline d'analyse bioinf
   * `Question_1/` : Contient `README.md` (validation de la configuration Git/GitHub)
   * `Question_2/` : Contient `Abstract.txt` (résumé scientifique réduit à 250 mots)
   * `Question_4/` : Contient `Proposition.txt` (protocole de RT-qPCR multiplexe à haut débit)
-  * `data/` : Contient `Devoir1.Rmd` (code d'analyse reproductible) et `2_Data_RNASeq_Cannabis_Sex.csv` (jeu de données d'entrée)
+  * `code/` : Contient `Devoir1.Rmd` (code d'analyse reproductible et commenté)
+  * `data/` : Contient `2_Data_RNASeq_Cannabis_Sex.csv` (jeu de données d'entrée)
   * `figures/` : Contient `Figure1_REM16_boxplot.png`, `Figure2_FT1_boxplot.png` et `Figure3_Combined_boxplot.png`
   * `README.md` : Documentation principale du dépôt
 
@@ -55,14 +56,14 @@ Pour installer les dépendances manquantes dans R, exécutez la commande suivant
 
 ## 4. Reproduire l'analyse (Tâche 3)
 
-Le script `data/Devoir1.Rmd` lit automatiquement le fichier `data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte automatiquement les trois figures au format PNG dans le dossier `figures/`.
+Le script `code/Devoir1.Rmd` lit automatiquement le fichier `data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte automatiquement les trois figures au format PNG dans le dossier `figures/`.
 
 ### Option A — Exécution directe en ligne de commande (Terminal)
 Depuis la racine du dépôt nouvellement cloné, exécutez :
-`Rscript -e "rmarkdown::render('data/Devoir1.Rmd')"`
+`Rscript -e "rmarkdown::render('code/Devoir1.Rmd')"`
 
 ### Option B — Exécution interactive via RStudio
-1. Ouvrez le fichier `data/Devoir1.Rmd` dans RStudio.
+1. Ouvrez le fichier `code/Devoir1.Rmd` dans RStudio.
 2. Cliquez sur le bouton **Knit** (ou exécutez les cellules séquentiellement). Le répertoire de travail est défini automatiquement de façon relative à l'emplacement du fichier `.Rmd`.
 
 ---
