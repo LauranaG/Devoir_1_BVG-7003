@@ -1,80 +1,125 @@
 ---
-title: "Devoir_1_BVG-7003"
-output: html_document
-date: "2026-10-14"
-author: "LauranaG"
+title: "Tâche 3 — Analyse de l'expression de REM16 et FT1 chez Cannabis sativa"
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-## R Markdown
+## 1. Chargement des librairies et des données
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r}
-
-setwd("~/BVG-7003/Devoir_1_BVG-7003/data/")
-df = read.csv("~/BVG-7003/Devoir_1_BVG-7003/data/2_Data_RNASeq_Cannabis_Sex.csv")
-
+```{r chargement}
 library(dplyr)
 library(tidyr)
 
-REM16 <- dplyr::filter(df, grepl("LOC115699937", X))
-FT1 <- dplyr::filter(df, grepl("LOC115696989", X))
+# Chemin relatif depuis Question_3/ vers data/ (aucune modification requise après un git clone)
+fichier_donnees <- "../data/2_Data_RNASeq_Cannabis_Sex.csv"
 
-female_cols <- grep("_XX", names(df), value = TRUE)
-male_cols <- grep("_XY", names(df), value = TRUE)
+if (!file.exists(fichier_donnees)) {
+  stop("Erreur : Le fichier de données est introuvable dans ../data/. Assurez-vous d'exécuter le script depuis la structure originale du dépôt.")
+}
 
-df_females_REM16 <- REM16[, c("X", female_cols)]
-df_males_REM16 <- REM16[, c("X", male_cols)]
-
-df_females_FT1 <- FT1[, c("X", female_cols)]
-df_males_FT1 <- FT1[, c("X", male_cols)]
-
-all_females_wide <- bind_rows(df_females_REM16, df_females_FT1)
-all_males_wide <- bind_rows(df_males_REM16, df_males_FT1)
-
-females_long <- pivot_longer(all_females_wide, cols = -X, names_to = "Sample", values_to = "Expression")
-females_long$Sex <- "Female (XX)"
-
-males_long <- pivot_longer(all_males_wide, cols = -X, names_to = "Sample", values_to = "Expression")
-males_long$Sex <- "Male (XY)"
-
-df_final <- bind_rows(females_long, males_long)
-
+df <- read.csv(fichier_donnees, stringsAsFactors = FALSE)
 ```
-## Including Plots
 
-You can also embed plots, for example:
+## 2. Contrôle qualité et préparation des données
 
-```{r}
+Lors de l'inspection initiale de la colonne d'identifiants (`X`), une **incohérence de formatage (problème de qualité des données)** a été identifiée :
+- Le locus de FT1 est formaté normalement : `LOC115696989`
+- Le locus de REM16 contient un préfixe parasite : `Cannabis_LOC115699937`
 
-boxplot(Expression ~ Sex, 
-        data = subset(df_final, X == "Cannabis_LOC115699937"),
-        names = c("Femelle (XX)", "Mâle (XY)"),
-        main = "Expression de REM16 selon le sexe",
-        xlab = "Sexe", ylab = "Expression",
+Une recherche par égalité stricte (`X == "LOC115699937"`) échouerait et exclurait REM16 de l'analyse. Nous utilisons donc une recherche par motif partiel (`grepl`) pour extraire les deux gènes, puis nous standardisons immédiatement leurs noms en `REM16` et `FT1`.
+
+```{r nettoyage}
+# Extraction robuste par sous-chaîne de caractères pour contourner le préfixe "Cannabis_"
+genes_cibles <- df %>%
+  filter(grepl("LOC115699937|LOC115696989", X)) %>%
+  mutate(Gene = ifelse(grepl("LOC115699937", X), "REM16", "FT1"))
+
+# Identification automatique des colonnes associées aux plantes femelles (_XX) et mâles (_XY)
+female_cols <- grep("_XX$", names(df), value = TRUE)
+male_cols   <- grep("_XY$", names(df), value = TRUE)
+
+# Passage au format long (tidy) et attribution du sexe biologique
+df_final <- genes_cibles %>%
+  select(Gene, all_of(c(female_cols, male_cols))) %>%
+  pivot_longer(cols = -Gene, names_to = "Sample", values_to = "Expression") %>%
+  mutate(
+    Expression = as.numeric(Expression),
+    Sex = ifelse(grepl("_XX$", Sample), "Femelle (XX)", "Mâle (XY)"),
+    Sex = factor(Sex, levels = c("Femelle (XX)", "Mâle (XY)")),
+    Gene = factor(Gene, levels = c("REM16", "FT1"))
+  ) %>%
+  filter(!is.na(Expression)) # Exclusion préventive d'éventuelles valeurs manquantes
+```
+
+## 3. Visualisation de l'expression génique selon le sexe
+
+Les trois figures demandées sont générées ci-dessous et exportées automatiquement dans le dossier `../figures/`.
+
+```{r figures, fig.width=7, fig.height=5}
+# Création automatique du dossier figures/ s'il n'existe pas
+dir.create("../figures", showWarnings = FALSE, recursive = TRUE)
+
+# --- Figure 1 : Boxplot de REM16 ---
+png("../figures/Figure1_REM16_boxplot.png", width = 1600, height = 1200, res = 250)
+boxplot(Expression ~ Sex,
+        data = subset(df_final, Gene == "REM16"),
+        main = "Expression de REM16 selon le sexe chez Cannabis sativa",
+        xlab = "Sexe chromosomique",
+        ylab = "Expression génique normalisée (unités arbitraires)",
+        col = c("pink", "lightblue"))
+dev.off()
+
+# Affichage dans le rapport
+boxplot(Expression ~ Sex,
+        data = subset(df_final, Gene == "REM16"),
+        main = "Expression de REM16 selon le sexe chez Cannabis sativa",
+        xlab = "Sexe chromosomique",
+        ylab = "Expression génique normalisée (unités arbitraires)",
         col = c("pink", "lightblue"))
 
-boxplot(Expression ~ Sex, 
-        data = subset(df_final, X == "LOC115696989"),
-        names = c("Femelle (XX)", "Mâle (XY)"),
-        main = "Expression de FT1 selon le sexe",
-        xlab = "Sexe", ylab = "Expression",
+# --- Figure 2 : Boxplot de FT1 ---
+png("../figures/Figure2_FT1_boxplot.png", width = 1600, height = 1200, res = 250)
+boxplot(Expression ~ Sex,
+        data = subset(df_final, Gene == "FT1"),
+        main = "Expression de FT1 selon le sexe chez Cannabis sativa",
+        xlab = "Sexe chromosomique",
+        ylab = "Expression génique normalisée (unités arbitraires)",
+        col = c("pink", "lightblue"))
+dev.off()
+
+boxplot(Expression ~ Sex,
+        data = subset(df_final, Gene == "FT1"),
+        main = "Expression de FT1 selon le sexe chez Cannabis sativa",
+        xlab = "Sexe chromosomique",
+        ylab = "Expression génique normalisée (unités arbitraires)",
         col = c("pink", "lightblue"))
 
-boxplot(Expression ~ Sex + X, 
+# --- Figure 3 : Figure combinée (REM16 et FT1) ---
+# Transformation log2(x + 1) pour comparer les deux gènes sans distorsion d'échelle
+png("../figures/Figure3_Combined_boxplot.png", width = 1800, height = 1200, res = 250)
+boxplot(log2(Expression + 1) ~ Sex + Gene,
         data = df_final,
-        names = c("REM16\nFemelle (XX)", "REM16\nMâle (XY)", 
+        names = c("REM16\nFemelle (XX)", "REM16\nMâle (XY)",
                   "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
-        main = "Expression de REM16 et FT1 selon le sexe",
-        xlab = "Gène et Sexe", ylab = "Expression",
+        main = "Comparaison de l'expression de REM16 et FT1 selon le sexe",
+        xlab = "Gène et sexe chromosomique",
+        ylab = "Expression normalisée [log2(x + 1)]",
         col = c("pink", "lightblue"))
+legend("topright", legend = c("Femelle (XX)", "Mâle (XY)"),
+       fill = c("pink", "lightblue"), bty = "n")
+dev.off()
 
+boxplot(log2(Expression + 1) ~ Sex + Gene,
+        data = df_final,
+        names = c("REM16\nFemelle (XX)", "REM16\nMâle (XY)",
+                  "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
+        main = "Comparaison de l'expression de REM16 et FT1 selon le sexe",
+        xlab = "Gène et sexe chromosomique",
+        ylab = "Expression normalisée [log2(x + 1)]",
+        col = c("pink", "lightblue"))
+legend("topright", legend = c("Femelle (XX)", "Mâle (XY)"),
+       fill = c("pink", "lightblue"), bty = "n")
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
