@@ -3,40 +3,83 @@
 Ce dépôt rassemble les livrables, les données et le pipeline d'analyse bioinformatique du Devoir 1 du cours BVG-7003. L'analyse principale (Tâche 3) évalue l'expression des gènes candidats *REM16* (`LOC115699937`) et *FT1* (`LOC115696989`) pour la discrimination sexuelle précoce chez *Cannabis sativa* à partir de données transcriptomiques (RNA-Seq) de 138 individus.
 
 ## Sommaire
-1. [Organisation du dépôt](#1-organisation-du-dépôt)
-2. [Prérequis et dépendances](#2-prérequis-et-dépendances)
-3. [Reproduire l'analyse (Tâche 3)](#3-reproduire-lanalyse-tâche-3)
-4. [Aperçu des résultats et figures](#4-aperçu-des-résultats-et-figures)
+1. [Contenu et organisation du dépôt](#1-contenu-et-organisation-du-dépôt)
+2. [Détail des tâches réalisées](#2-détail-des-tâches-réalisées)
+3. [Prérequis et dépendances](#3-prérequis-et-dépendances)
+4. [Reproduire l'analyse (Tâche 3)](#4-reproduire-lanalyse-tâche-3)
+5. [Aperçu des résultats et figures](#5-aperçu-des-résultats-et-figures)
 
 ---
 
-## 1. Organisation du dépôt
+## 1. Contenu et organisation du dépôt
 
-| Question | Description du livrable | Emplacement |
+| Tâche | Description du livrable | Fichier / Dossier |
 | :---: | :--- | :--- |
-| **Tâche 1** | Initialisation et validation du dépôt Git/GitHub | [`Question_1/README.md`](Question_1/README.md) |
-| **Tâche 2** | Résumé condensé (250 mots) de Steen *et al.* (2013) sur les rétractations scientifiques | [`Question_2/Abstract.txt`](Question_2/Abstract.txt) |
-| **Tâche 3** | Script R Markdown d'analyse de l'expression de *REM16* et *FT1* selon le sexe | [`Question_3/Devoir1.Rmd`](Question_3/Devoir1.Rmd) |
-| **Tâche 4** | Proposition méthodologique à haut débit pour le sexage transcriptomique | [`Question_4/Proposition.txt`](Question_4/Proposition.txt) |
+| **Tâche 1** | Initialisation et configuration du dépôt Git/GitHub | [`Question_1/README.md`](Question_1/README.md) |
+| **Tâche 2** | Résumé condensé (exactement 250 mots) de Steen *et al.* (2013) | [`Question_2/Abstract.txt`](Question_2/Abstract.txt) |
+| **Tâche 3** | Script R Markdown d'analyse de l'expression de *REM16* et *FT1* | [`Question_3/Devoir1.Rmd`](Question_3/Devoir1.Rmd) |
+| **Tâche 4** | Proposition d'une méthode à haut débit pour le sexage du cannabis | [`Question_4/Proposition.txt`](Question_4/Proposition.txt) |
+| **Données** | Matrice d'expression RNA-Seq normalisée (138 plantes, > 34 000 gènes) | [`data/2_Data_RNASeq_Cannabis_Sex.csv`](data/2_Data_RNASeq_Cannabis_Sex.csv) |
+| **Figures** | Graphiques générés automatiquement par le script de la Tâche 3 | [`figures/`](figures/) |
 
-```text
-Devoir_1_BVG-7003/
-├── Question_1/
-│   └── README.md                         # Validation de la Tâche 1
-├── Question_2/
-│   └── Abstract.txt                      # Résumé réduit à exactement 250 mots
-├── Question_3/
-│   └── Devoir1.Rmd                       # Script d'analyse reproductible (Tâche 3)
-├── Question_4/
-│   └── Proposition.txt                   # Protocole RT-qPCR à haut débit (max 250 mots)
-├── data/
-│   └── 2_Data_RNASeq_Cannabis_Sex.csv    # Matrice d'expression normalisée (138 plantes)
-├── figures/                              # Figures exportées automatiquement par Devoir1.Rmd
-│   ├── Figure1_REM16_boxplot.png
-│   ├── Figure2_FT1_boxplot.png
-│   └── Figure3_Combined_boxplot.png
-└── README.md                             # Documentation principale du dépôt
+### Structure de l'arborescence
+* `Devoir_1_BVG-7003/`
+  * `Question_1/` : Contient `README.md` (validation de la configuration Git/GitHub)
+  * `Question_2/` : Contient `Abstract.txt` (résumé scientifique réduit à 250 mots)
+  * `Question_3/` : Contient `Devoir1.Rmd` (code d'analyse reproductible et commenté)
+  * `Question_4/` : Contient `Proposition.txt` (protocole de RT-qPCR multiplexe à haut débit)
+  * `data/` : Contient `2_Data_RNASeq_Cannabis_Sex.csv` (jeu de données d'entrée)
+  * `figures/` : Contient `Figure1_REM16_boxplot.png`, `Figure2_FT1_boxplot.png` et `Figure3_Combined_boxplot.png`
+  * `README.md` : Documentation principale du dépôt
 
-## Reproduire l'analyse
+---
 
-Ouvrir [`Question_3/Devoir1.Rmd`](Question_3/Devoir1.Rmd) dans RStudio et exécuter les cellules pour générer les tableaux et figures de l'analyse. Vérifier que les chemins vers les fichiers de données correspondent à l'emplacement du projet sur votre ordinateur.
+## 2. Détail des tâches réalisées
+
+* **Tâche 1 — Préparation du dépôt GitHub :** Clonage du dépôt initial, création du dossier `Question_1/` et ajout d'un fichier `README.md` permettant le suivi du dossier par Git.
+* **Tâche 2 — Réduction d'un résumé scientifique :** Condensation du résumé de l'article *Why Has the Number of Scientific Retractions Increased?* (Steen, Casadevall et Fang, *PLOS ONE*, 2013) de 500 mots à exactement 250 mots dans `Question_2/Abstract.txt`.
+* **Tâche 3 — Analyse de l'expression de *REM16* et *FT1* :** Extraction des données d'expression normalisée de *REM16* (`LOC115699937`) et *FT1* (`LOC115696989`) chez 138 plants de *Cannabis sativa* femelles (`XX`) et mâles (`XY`), nettoyage d'une anomalie de formatage d'identifiant (`Cannabis_LOC115699937`) et génération de trois boxplots comparatifs.
+* **Tâche 4 — Méthode de sexage transcriptomique à haut débit :** Proposition d'un protocole industriel économique (< 250 mots) combinant une lyse foliaire directe en plaques de 384 puits, une RT-qPCR *One-Step* multiplexée (*REM16* et *FT1*) et une assignation automatisée du sexe par calcul du `dCt`.
+
+---
+
+## 3. Prérequis et dépendances
+
+L'analyse de la Tâche 3 est réalisée en **R** (version 4.0 ou supérieure) et utilise exclusivement des chemins relatifs portables. Aucune modification du code ou des chemins d'accès n'est requise après le clonage du dépôt.
+
+**Paquets R requis :** `dplyr`, `tidyr`, `rmarkdown` et `knitr`.
+
+Pour installer les dépendances manquantes dans R, exécutez la commande suivante :
+`install.packages(c("dplyr", "tidyr", "rmarkdown", "knitr"))`
+
+---
+
+## 4. Reproduire l'analyse (Tâche 3)
+
+Le script `Question_3/Devoir1.Rmd` lit automatiquement le fichier `../data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte automatiquement les trois figures au format PNG dans le dossier `figures/`.
+
+### Option A — Exécution directe en ligne de commande (Terminal)
+Depuis la racine du dépôt nouvellement cloné, exécutez :
+`Rscript -e "rmarkdown::render('Question_3/Devoir1.Rmd')"`
+
+### Option B — Exécution interactive via RStudio
+1. Ouvrez le fichier `Question_3/Devoir1.Rmd` dans RStudio.
+2. Cliquez sur le bouton **Knit** (ou exécutez les cellules séquentiellement). Le répertoire de travail est défini automatiquement de façon relative à l'emplacement du fichier `.Rmd`.
+
+---
+
+## 5. Aperçu des résultats et figures
+
+Les trois visualisations produites par le flux de travail se trouvent dans le dossier `figures/` :
+
+### Figure 1 — Expression de *REM16* selon le sexe
+![Expression de REM16 selon le sexe](figures/Figure1_REM16_boxplot.png)
+*Légende : Le gène REM16 (LOC115699937) présente une forte surexpression chez les individus femelles (XX) comparativement aux individus mâles (XY), confirmant son utilité comme biomarqueur du sexe femelle.*
+
+### Figure 2 — Expression de *FT1* selon le sexe
+![Expression de FT1 selon le sexe](figures/Figure2_FT1_boxplot.png)
+*Légende : Le gène FT1 (LOC115696989) présente une distribution d'expression similaire et stable entre les femelles (XX) et les mâles (XY), ce qui en fait un gène de référence interne approprié pour la normalisation.*
+
+### Figure 3 — Comparaison combinée de *REM16* et *FT1*
+![Comparaison combinée de REM16 et FT1](figures/Figure3_Combined_boxplot.png)
+*Légende : Comparaison conjointe de l'expression normalisée en échelle log2(x + 1) des gènes REM16 et FT1 chez les plantes femelles (XX) et mâles (XY).*
