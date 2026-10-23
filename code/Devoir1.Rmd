@@ -13,11 +13,12 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(dplyr)
 library(tidyr)
 
-# Chemin relatif depuis code/ vers data/ (aucune modification requise après un git clone)
-fichier_donnees <- "../data/2_Data_RNASeq_Cannabis_Sex.csv"
+# Détection automatique de la racine du dépôt (compatible VS Code, RStudio et Terminal)
+racine_depot <- ifelse(dir.exists("data"), ".", "..")
+fichier_donnees <- file.path(racine_depot, "data", "2_Data_RNASeq_Cannabis_Sex.csv")
 
 if (!file.exists(fichier_donnees)) {
-  stop("Erreur : Le fichier de données est introuvable dans ../data/. Assurez-vous d'exécuter le script depuis la structure originale du dépôt.")
+  stop("Erreur : Le fichier de données est introuvable. Assurez-vous d'exécuter le script depuis le dépôt cloné.")
 }
 
 df <- read.csv(fichier_donnees, stringsAsFactors = FALSE)
@@ -56,24 +57,25 @@ df_final <- genes_cibles %>%
     Sex = factor(Sex, levels = c("Femelle (XX)", "Mâle (XY)")),
     Gene = factor(Gene, levels = c("REM16", "FT1"))
   ) %>%
-  filter(!is.na(Expression)) # Exclusion préventive d'éventuelles valeurs manquantes
+  filter(!is.na(Expression))
 ```
 
 ## 3. Visualisation de l'expression génique selon le sexe
 
-Les trois figures demandées sont générées ci-dessous et exportées automatiquement dans le dossier `../figures/`.
+Les trois figures demandées sont générées ci-dessous et exportées automatiquement dans le dossier `figures/`.
 
 ```{r figures, fig.width=7, fig.height=5}
-# Création automatique du dossier figures/ s'il n'existe pas
-dir.create("../figures", showWarnings = FALSE, recursive = TRUE)
+# Création automatique du dossier figures/ à la racine du dépôt
+dossier_figures <- file.path(racine_depot, "figures")
+dir.create(dossier_figures, showWarnings = FALSE, recursive = TRUE)
 
 # --- Figure 1 : Boxplot de REM16 ---
-png("../figures/Figure1_REM16_boxplot.png", width = 1600, height = 1200, res = 250)
+png(file.path(dossier_figures, "Figure1_REM16_boxplot.png"), width = 1600, height = 1200, res = 250)
 boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "REM16"),
         main = "Expression de REM16 selon le sexe chez Cannabis sativa",
         xlab = "Sexe chromosomique",
-        ylab = "Expression génique normalisée (unités arbitraires)",
+        ylab = "Expression génique (unités arbitraires)",
         col = c("pink", "lightblue"))
 dev.off()
 
@@ -81,16 +83,16 @@ boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "REM16"),
         main = "Expression de REM16 selon le sexe chez Cannabis sativa",
         xlab = "Sexe chromosomique",
-        ylab = "Expression génique normalisée (unités arbitraires)",
+        ylab = "Expression génique (unités arbitraires)",
         col = c("pink", "lightblue"))
 
 # --- Figure 2 : Boxplot de FT1 ---
-png("../figures/Figure2_FT1_boxplot.png", width = 1600, height = 1200, res = 250)
+png(file.path(dossier_figures, "Figure2_FT1_boxplot.png"), width = 1600, height = 1200, res = 250)
 boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "FT1"),
         main = "Expression de FT1 selon le sexe chez Cannabis sativa",
         xlab = "Sexe chromosomique",
-        ylab = "Expression génique normalisée (unités arbitraires)",
+        ylab = "Expression génique (unités arbitraires)",
         col = c("pink", "lightblue"))
 dev.off()
 
@@ -98,13 +100,11 @@ boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "FT1"),
         main = "Expression de FT1 selon le sexe chez Cannabis sativa",
         xlab = "Sexe chromosomique",
-        ylab = "Expression génique normalisée (unités arbitraires)",
+        ylab = "Expression génique (unités arbitraires)",
         col = c("pink", "lightblue"))
 
 # --- Figure 3 : Figure combinée (REM16 et FT1) ---
-# Les données étant déjà normalisées sur une échelle comparable (6 à 11),
-# elles sont représentées sur la même échelle sans re-transformation pour éviter toute distorsion.
-png("../figures/Figure3_Combined_boxplot.png", width = 1800, height = 1200, res = 250)
+png(file.path(dossier_figures, "Figure3_Combined_boxplot.png"), width = 1800, height = 1200, res = 250)
 boxplot(Expression ~ Sex + Gene,
         data = df_final,
         ylim = c(6, 11.8),
@@ -112,7 +112,7 @@ boxplot(Expression ~ Sex + Gene,
                   "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
         main = "Comparaison de l'expression de REM16 et FT1 selon le sexe",
         xlab = "Gène et sexe chromosomique",
-        ylab = "Expression génique normalisée (unités arbitraires)",
+        ylab = "Expression génique (unités arbitraires)",
         col = c("pink", "lightblue"))
 legend("topright", legend = c("Femelle (XX)", "Mâle (XY)"),
        fill = c("pink", "lightblue"), bty = "n")
@@ -125,7 +125,7 @@ boxplot(Expression ~ Sex + Gene,
                   "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
         main = "Comparaison de l'expression de REM16 et FT1 selon le sexe",
         xlab = "Gène et sexe chromosomique",
-        ylab = "Expression génique normalisée (unités arbitraires)",
+        ylab = "Expression génique (unités arbitraires)",
         col = c("pink", "lightblue"))
 legend("topright", legend = c("Femelle (XX)", "Mâle (XY)"),
        fill = c("pink", "lightblue"), bty = "n")
@@ -144,9 +144,9 @@ resume_stats <- df_final %>%
     .groups = "drop"
   )
 
-knitr::kable(resume_stats, caption = "Statistiques descriptives de l'expression normalisée de REM16 et FT1 selon le sexe")
+knitr::kable(resume_stats, caption = "Statistiques descriptives de l'expression de REM16 et FT1 selon le sexe")
 ```
 
 **Conclusion biologique :**
 1. **Marqueur de féminité (*REM16*) :** Le gène *REM16* (`LOC115699937`) présente une surexpression marquée chez les individus femelles (`XX`, médiane ~10,5) par rapport aux mâles (`XY`, médiane ~8,7), sans chevauchement des distributions interquartiles, ce qui en fait un biomarqueur diagnostique fiable pour le sexage.
-2. **Gène de référence interne (*FT1*) :** Le gène *FT1* (`LOC115696989`) maintient un niveau d'expression basal stable et équivalent entre les plantes femelles et mâles (médiane ~6,6), validant son utilisation comme contrôle endogène de normalisation (p. ex. en RT-qPCR multiplexe).
+2. **Gène de référence interne (*FT1*) :** Le gène *FT1* (`LOC115696989`) maintient un niveau d'expression stable et équivalent entre les plantes femelles et mâles (médiane ~6,6), validant son utilisation comme contrôle endogène de référence (p. ex. en RT-qPCR multiplexe).
