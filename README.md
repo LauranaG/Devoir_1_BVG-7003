@@ -19,7 +19,7 @@ Ce dépôt rassemble les livrables, les données et le pipeline d'analyse bioinf
 | **Tâche 2** | Résumé condensé (exactement 250 mots) de Steen *et al.* (2013) | [`Question_2/Abstract.txt`](Question_2/Abstract.txt) |
 | **Tâche 3** | Script R Markdown et rapport d'analyse de *REM16* et *FT1* | [`code/Devoir1.Rmd`](code/Devoir1.Rmd) / [`code/Devoir1.md`](code/Devoir1.md) |
 | **Tâche 4** | Proposition d'une méthode à haut débit pour le sexage du cannabis | [`Question_4/Proposition.txt`](Question_4/Proposition.txt) |
-| **Données** | Matrice d'expression RNA-Seq normalisée (138 plantes, > 34 000 gènes) | [`data/2_Data_RNASeq_Cannabis_Sex.csv`](data/2_Data_RNASeq_Cannabis_Sex.csv) |
+| **Données** | Matrice d'expression RNA-Seq (138 plantes, > 34 000 gènes) | [`data/2_Data_RNASeq_Cannabis_Sex.csv`](data/2_Data_RNASeq_Cannabis_Sex.csv) |
 | **Figures** | Graphiques générés automatiquement par le script de la Tâche 3 | [`figures/`](figures/) |
 
 ### Structure de l'arborescence
@@ -49,7 +49,7 @@ Devoir_1_BVG-7003/
 
 - **Tâche 1 — Préparation du dépôt GitHub :** Clonage du dépôt initial, création du dossier `Question_1/` et ajout d'un fichier `README.md` permettant le suivi du dossier par Git.
 - **Tâche 2 — Réduction d'un résumé scientifique :** Condensation du résumé de l'article *Why Has the Number of Scientific Retractions Increased?* (Steen, Casadevall et Fang, *PLOS ONE*, 2013) de 500 mots à exactement 250 mots dans `Question_2/Abstract.txt`.
-- **Tâche 3 — Analyse de l'expression de *REM16* et *FT1* :** Extraction des données d'expression normalisée de *REM16* (`LOC115699937`) et *FT1* (`LOC115696989`) chez 138 plants de *Cannabis sativa* femelles (`XX`) et mâles (`XY`), correction explicite d'une anomalie de formatage d'identifiant (`Cannabis_LOC115699937`) et génération de trois boxplots comparatifs.
+- **Tâche 3 — Analyse de l'expression de *REM16* et *FT1* :** Extraction des données d'expression de *REM16* (`LOC115699937`) et *FT1* (`LOC115696989`) chez 138 plants de *Cannabis sativa* femelles (`XX`) et mâles (`XY`), correction explicite d'une anomalie de formatage d'identifiant (`Cannabis_LOC115699937`) et génération de trois boxplots comparatifs.
 - **Tâche 4 — Méthode de sexage transcriptomique à haut débit :** Proposition d'un protocole industriel économique (< 250 mots) combinant une lyse foliaire directe en plaques de 384 puits, une RT-qPCR *One-Step* multiplexée (*REM16* et *FT1*) et une assignation automatisée du sexe par calcul du `dCt`.
 
 ---
@@ -93,12 +93,12 @@ Les trois visualisations produites par le flux de travail se trouvent dans le do
 
 ### Figure 2 — Expression de *FT1* selon le sexe
 ![Expression de FT1 selon le sexe](figures/Figure2_FT1_boxplot.png)
-*Légende : Le gène FT1 (LOC115696989) présente une distribution d'expression similaire et stable entre les femelles (XX) et les mâles (XY) autour d'une médiane de ~6,6, ce qui en fait un gène de référence interne approprié pour la normalisation.*
+*Légende : Le gène FT1 (LOC115696989) présente une distribution d'expression similaire et stable entre les femelles (XX) et les mâles (XY) autour d'une médiane de ~6,6, ce qui en fait un gène de référence interne approprié.*
 
 ### Figure 3 — Comparaison combinée de *REM16* et *FT1*
 ![Comparaison combinée de REM16 et FT1](figures/Figure3_Combined_boxplot.png)
-*Légende : Comparaison conjointe de l'expression génique normalisée des gènes REM16 et FT1 chez les plantes femelles (XX) et mâles (XY) sur une échelle commune sans distorsion.*
+*Légende : Comparaison conjointe de l'expression des gènes REM16 et FT1 chez les plantes femelles (XX) et mâles (XY) sur une échelle commune.*
 
 ### Synthèse de l'interprétation biologique
 - **Discrimination sexuelle par *REM16* :** L'absence de chevauchement entre les distributions interquartiles des femelles (`XX`) et des mâles (`XY`) démontre que le niveau d'expression de *REM16* suffit à discriminer de manière robuste le sexe chromosomique des individus.
-- **Normalisation par *FT1* :** L'invariance d'expression de *FT1* entre les deux sexes valide son rôle de contrôle endogène stable, permettant de corriger les variations techniques d'extraction ou de quantité d'ARN initial lors d'un test diagnostique à haut débit (tel que le protocole RT-qPCR multiplexe détaillé dans `Question_4/Proposition.txt`).
+- **Gène de contrôle *FT1* :** L'invariance d'expression de *FT1* entre les deux sexes valide son rôle de contrôle endogène stable, permettant de corriger les variations techniques d'extraction ou de quantité d'ARN initial lors d'un test diagnostique à haut débit (tel que le protocole RT-qPCR multiplexe détaillé dans `Question_4/Proposition.txt`).
