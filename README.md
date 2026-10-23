@@ -69,17 +69,16 @@ install.packages(c("dplyr", "tidyr", "rmarkdown", "knitr"))
 
 ## 4. Reproduire l'analyse (Tâche 3)
 
-Le script `code/Devoir1.Rmd` lit automatiquement le fichier `data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte automatiquement les trois figures au format PNG (250 DPI) dans le dossier `figures/`.
+Le script `code/Devoir1.Rmd` détecte automatiquement le répertoire de travail (racine du dépôt ou sous-dossier `code/`), lit le fichier `data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte automatiquement les trois figures au format PNG (250 DPI) dans le dossier `figures/`.
 
-### Option A — Exécution directe en ligne de commande (Terminal)
+### Option A — Exécution interactive via RStudio ou VS Code
+1. Ouvrez le fichier `code/Devoir1.Rmd` dans RStudio ou VS Code.
+2. Cliquez sur **Knit** / **Run All** (ou exécutez les cellules séquentiellement).
+
+### Option B — Exécution directe en ligne de commande (Terminal)
 Depuis la racine du dépôt nouvellement cloné, exécutez :
 ```bash
-Rscript -e "rmarkdown::render('code/Devoir1.Rmd')"
-```
-
-### Option B — Exécution interactive via RStudio
-1. Ouvrez le fichier `code/Devoir1.Rmd` dans RStudio.
-2. Cliquez sur le bouton **Knit** (ou exécutez les cellules séquentiellement). Le répertoire de travail est défini automatiquement de façon relative à l'emplacement du fichier `.Rmd`.
+Rscript -e "knitr::knit('code/Devoir1.Rmd', output = 'code/Devoir1.md')"
 
 ---
 
