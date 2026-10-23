@@ -69,17 +69,17 @@ install.packages(c("dplyr", "tidyr", "rmarkdown", "knitr"))
 
 ## 4. Reproduire l'analyse (Tâche 3)
 
-Le script `code/Devoir1.Rmd` lit automatiquement le fichier `data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte automatiquement les trois figures au format PNG (250 DPI) dans le dossier `figures/`.
+Le script `code/Devoir1.Rmd` utilise des chemins relatifs portables. Il lit automatiquement le fichier `data/2_Data_RNASeq_Cannabis_Sex.csv`, corrige l'incohérence d'identifiant du gène *REM16* (`Cannabis_LOC115699937`), sépare les échantillons femelles (`_XX`) et mâles (`_XY`), et exporte les trois figures au format PNG dans le dossier `figures/`.
 
-### Option A — Exécution directe en ligne de commande (Terminal)
-Depuis la racine du dépôt nouvellement cloné, exécutez :
-```bash
-Rscript -e "rmarkdown::render('code/Devoir1.Rmd')"
-```
-
-### Option B — Exécution interactive via RStudio
+### Option A — Via RStudio (Méthode recommandée)
 1. Ouvrez le fichier `code/Devoir1.Rmd` dans RStudio.
-2. Cliquez sur le bouton **Knit** (ou exécutez les cellules séquentiellement). Le répertoire de travail est défini automatiquement de façon relative à l'emplacement du fichier `.Rmd`.
+2. Cliquez sur le bouton **Knit** (RStudio définit automatiquement le dossier `code/` comme répertoire de travail, ce qui résout les chemins relatifs `../data/` et `../figures/`).
+
+### Option B — En ligne de commande (Terminal) ou VS Code
+1. Ouvrez un terminal (ou ouvrez le dossier racine `Devoir_1_BVG-7003` dans VS Code) et assurez-vous d'être placé à la racine du dépôt cloné :
+   ```bash
+   cd Devoir_1_BVG-7003
+   Rscript -e "knitr::knit('code/Devoir1.Rmd', output = 'code/Devoir1.md')"
 
 ---
 
