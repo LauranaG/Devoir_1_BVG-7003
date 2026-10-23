@@ -1,12 +1,12 @@
-Méthode à haut débit pour le sexage transcriptomique du cannabis
+Méthode à haut débit pour le sexage transcriptomique du cannabis :
 
-L'analyse transcriptomique démontre que REM16 est fortement surexprimé chez les femelles (XX), tandis que FT1 présente une expression stable entre les sexes, agissant comme gène de référence idéal. Pour un dépistage industriel à grande échelle et à faible coût, cette stratégie mise sur l'absence de purification d'ARN et la miniaturisation.
+L'analyse transcriptomique démontre que REM16 est fortement surexprimé chez les femelles, tandis que FT1 présente une expression stable entre les sexes, agissant comme gène de référence (contrôle) idéal. Pour un dépistage à grande échelle et à faible coût, cette stratégie mise sur la simplification de l'extraction et la miniaturisation.
 
-1. Échantillonnage et lyse directe
-Un micro-prélèvement foliaire est effectué au stade végétatif précoce. Pour réduire drastiquement les coûts et le temps de manipulation, l'extraction d'ARN classique est remplacée par une lyse directe : les tissus sont placés en plaques de 384 puits dans un tampon de lyse thermique ou alcalin. Ce lysat brut est utilisé directement, éliminant l'achat de kits de purification coûteux (colonnes ou billes magnétiques).
+1. Échantillonnage et lyse directe (sans purification)
+Un micro-prélèvement foliaire est effectué au stade végétatif pour une identification précoce. Pour réduire drastiquement les coûts, l'extraction d'ARN classique est remplacée par une lyse directe : les tissus sont placés en plaques de 384 puits dans un tampon de lyse optimisé et chauffés. Ce lysat brut est utilisé directement, éliminant les kits de purification coûteux (comme les billes magnétiques).
 
 2. RT-qPCR multiplexe en une étape
-Le lysat subit une RT-qPCR One-Step (transcription inverse et amplification dans le même puits). Pour diviser par deux les coûts de réactifs et doubler le débit, la réaction est multiplexée : REM16 et FT1 sont co-amplifiés simultanément à l'aide de sondes TaqMan à fluorophores distincts (p. ex. FAM et HEX). L'expression relative est évaluée par le calcul du dCt (Ct_REM16 - Ct_FT1), où un dCt faible identifie une femelle.
+L'extrait subit une RT-qPCR One-Step (transcription inverse et amplification dans le même tube). Pour diviser les coûts de réactifs par deux, la réaction est multiplexée : REM16 et FT1 sont co-amplifiés simultanément dans le même puits à l'aide de sondes fluorescentes distinctes. Le ratio d'expression est évalué par le calcul du dCt (différence de cycle de détection entre REM16 et FT1). Un dCt plus faible indique une femelle.
 
 3. Analyse automatisée
-Des automates de pipetage réduisent les volumes réactionnels, minimisant le coût par plante. Un script R ou Python automatise la lecture des dCt et assigne le sexe selon le seuil validé à la Tâche 3.
+Des automates de pipetage garantissent la reproductibilité des micro-volumes, réduisant le coût par échantillon. Un script R ou Python automatise la lecture des dCt et assigne le sexe de chaque individu selon un seuil prédéfini, assurant un traitement rapide et standardisé.
