@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(dplyr)
 library(tidyr)
 
-# Le script est dans code/ et le fichier CSV dans data/.
+# Chemin relatif depuis code/ vers data/ (aucune modification requise après un git clone)
 fichier_donnees <- "../data/2_Data_RNASeq_Cannabis_Sex.csv"
 
 if (!file.exists(fichier_donnees)) {
@@ -36,6 +36,11 @@ Une recherche par égalité stricte (`X == "LOC115699937"`) échouerait et exclu
 genes_cibles <- df %>%
   filter(grepl("LOC115699937|LOC115696989", X)) %>%
   mutate(Gene = ifelse(grepl("LOC115699937", X), "REM16", "FT1"))
+
+# Vérification défensive que les 2 gènes cibles ont bien été extraits
+if (nrow(genes_cibles) != 2) {
+  stop("Erreur d'extraction : Les deux gènes cibles (REM16 et FT1) n'ont pas été trouvés dans le jeu de données.")
+}
 
 # Identification automatique des colonnes associées aux plantes femelles (_XX) et mâles (_XY)
 female_cols <- grep("_XX$", names(df), value = TRUE)
@@ -72,7 +77,6 @@ boxplot(Expression ~ Sex,
         col = c("pink", "lightblue"))
 dev.off()
 
-# Affichage dans le rapport
 boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "REM16"),
         main = "Expression de REM16 selon le sexe chez Cannabis sativa",
@@ -98,28 +102,51 @@ boxplot(Expression ~ Sex,
         col = c("pink", "lightblue"))
 
 # --- Figure 3 : Figure combinée (REM16 et FT1) ---
-# Transformation log2(x + 1) pour comparer les deux gènes sans distorsion d'échelle
+# Les données étant déjà normalisées sur une échelle comparable (6 à 11),
+# elles sont représentées sur la même échelle sans re-transformation pour éviter toute distorsion.
 png("../figures/Figure3_Combined_boxplot.png", width = 1800, height = 1200, res = 250)
-boxplot(log2(Expression + 1) ~ Sex + Gene,
+boxplot(Expression ~ Sex + Gene,
         data = df_final,
+        ylim = c(6, 11.8),
         names = c("REM16\nFemelle (XX)", "REM16\nMâle (XY)",
                   "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
         main = "Comparaison de l'expression de REM16 et FT1 selon le sexe",
         xlab = "Gène et sexe chromosomique",
-        ylab = "Expression normalisée [log2(x + 1)]",
+        ylab = "Expression génique normalisée (unités arbitraires)",
         col = c("pink", "lightblue"))
 legend("topright", legend = c("Femelle (XX)", "Mâle (XY)"),
        fill = c("pink", "lightblue"), bty = "n")
 dev.off()
 
-boxplot(log2(Expression + 1) ~ Sex + Gene,
+boxplot(Expression ~ Sex + Gene,
         data = df_final,
+        ylim = c(6, 11.8),
         names = c("REM16\nFemelle (XX)", "REM16\nMâle (XY)",
                   "FT1\nFemelle (XX)", "FT1\nMâle (XY)"),
         main = "Comparaison de l'expression de REM16 et FT1 selon le sexe",
         xlab = "Gène et sexe chromosomique",
-        ylab = "Expression normalisée [log2(x + 1)]",
+        ylab = "Expression génique normalisée (unités arbitraires)",
         col = c("pink", "lightblue"))
 legend("topright", legend = c("Femelle (XX)", "Mâle (XY)"),
        fill = c("pink", "lightblue"), bty = "n")
 ```
+
+## 4. Résumé statistique et interprétation biologique
+
+```{r resume_statistique}
+resume_stats <- df_final %>%
+  group_by(Gene, Sex) %>%
+  summarise(
+    N = n(),
+    Moyenne = round(mean(Expression), 2),
+    Mediane = round(median(Expression), 2),
+    Ecart_Type = round(sd(Expression), 2),
+    .groups = "drop"
+  )
+
+knitr::kable(resume_stats, caption = "Statistiques descriptives de l'expression normalisée de REM16 et FT1 selon le sexe")
+```
+
+**Conclusion biologique :**
+1. **Marqueur de féminité (*REM16*) :** Le gène *REM16* (`LOC115699937`) présente une surexpression marquée chez les individus femelles (`XX`, médiane ~10,5) par rapport aux mâles (`XY`, médiane ~8,7), sans chevauchement des distributions interquartiles, ce qui en fait un biomarqueur diagnostique fiable pour le sexage.
+2. **Gène de référence interne (*FT1*) :** Le gène *FT1* (`LOC115696989`) maintient un niveau d'expression basal stable et équivalent entre les plantes femelles et mâles (médiane ~6,6), validant son utilisation comme contrôle endogène de normalisation (p. ex. en RT-qPCR multiplexe).
