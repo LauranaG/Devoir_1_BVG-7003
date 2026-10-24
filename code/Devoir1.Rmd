@@ -13,14 +13,8 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(dplyr)
 library(tidyr)
 
-# Détection automatique de la racine du dépôt (compatible VS Code, RStudio et Terminal)
-racine_depot <- ifelse(dir.exists("data"), ".", "..")
-fichier_donnees <- file.path(racine_depot, "data", "2_Data_RNASeq_Cannabis_Sex.csv")
-
-if (!file.exists(fichier_donnees)) {
-  stop("Erreur : Le fichier de données est introuvable. Assurez-vous d'exécuter le script depuis le dépôt cloné.")
-}
-
+# Le script s'exécutant depuis code/, on remonte d'un niveau pour atteindre data/
+fichier_donnees <- "../data/2_Data_RNASeq_Cannabis_Sex.csv"
 df <- read.csv(fichier_donnees, stringsAsFactors = FALSE)
 ```
 

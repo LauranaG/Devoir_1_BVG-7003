@@ -79,7 +79,7 @@ Le script `code/Devoir1.Rmd` utilise des chemins relatifs portables. Il lit auto
 1. Ouvrez un terminal (ou ouvrez le dossier racine `Devoir_1_BVG-7003` dans VS Code) et assurez-vous d'être placé à la racine du dépôt cloné :
    ```bash
    cd Devoir_1_BVG-7003
-   Rscript -e "knitr::knit('code/Devoir1.Rmd', output = 'code/Devoir1.md')"
+   Rscript -e "rmarkdown::render('code/Devoir1.Rmd')"
 
 ---
 
