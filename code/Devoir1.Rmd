@@ -59,12 +59,8 @@ df_final <- genes_cibles %>%
 Les trois figures demandées sont générées ci-dessous et exportées automatiquement dans le dossier `figures/`.
 
 ```{r figures, fig.width=7, fig.height=5}
-# Création automatique du dossier figures/ à la racine du dépôt
-dossier_figures <- file.path(racine_depot, "figures")
-dir.create(dossier_figures, showWarnings = FALSE, recursive = TRUE)
-
 # --- Figure 1 : Boxplot de REM16 ---
-png(file.path(dossier_figures, "Figure1_REM16_boxplot.png"), width = 1600, height = 1200, res = 250)
+png("../figures/Figure1_REM16_boxplot.png", width = 1600, height = 1200, res = 250)
 boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "REM16"),
         main = "Expression de REM16 selon le sexe chez Cannabis sativa",
@@ -81,7 +77,7 @@ boxplot(Expression ~ Sex,
         col = c("pink", "lightblue"))
 
 # --- Figure 2 : Boxplot de FT1 ---
-png(file.path(dossier_figures, "Figure2_FT1_boxplot.png"), width = 1600, height = 1200, res = 250)
+png("../figures/Figure2_FT1_boxplot.png", width = 1600, height = 1200, res = 250)
 boxplot(Expression ~ Sex,
         data = subset(df_final, Gene == "FT1"),
         main = "Expression de FT1 selon le sexe chez Cannabis sativa",
@@ -98,7 +94,7 @@ boxplot(Expression ~ Sex,
         col = c("pink", "lightblue"))
 
 # --- Figure 3 : Figure combinée (REM16 et FT1) ---
-png(file.path(dossier_figures, "Figure3_Combined_boxplot.png"), width = 1800, height = 1200, res = 250)
+png("../figures/Figure3_Combined_boxplot.png", width = 1800, height = 1200, res = 250)
 boxplot(Expression ~ Sex + Gene,
         data = df_final,
         ylim = c(6, 11.8),
