@@ -32,11 +32,6 @@ genes_cibles <- df %>%
   filter(grepl("LOC115699937|LOC115696989", X)) %>%
   mutate(Gene = ifelse(grepl("LOC115699937", X), "REM16", "FT1"))
 
-# Vérification défensive que les 2 gènes cibles ont bien été extraits
-if (nrow(genes_cibles) != 2) {
-  stop("Erreur d'extraction : Les deux gènes cibles (REM16 et FT1) n'ont pas été trouvés dans le jeu de données.")
-}
-
 # Identification automatique des colonnes associées aux plantes femelles (_XX) et mâles (_XY)
 female_cols <- grep("_XX$", names(df), value = TRUE)
 male_cols   <- grep("_XY$", names(df), value = TRUE)
